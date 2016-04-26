@@ -1,0 +1,10 @@
+{
+  "name": "dataAccess",
+  "version": "0.0.1",
+  "description":"封装了REDIS,以及MYSQL的数据访问层",
+  "author":"magiclizi",
+  "dependencies":{
+    "mysql":"*",
+    "async":"*"
+  }
+}

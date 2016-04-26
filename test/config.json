@@ -1,0 +1,10 @@
+{
+  "test": {
+    "connectionLimit": 5,
+    "host": "139.196.210.143",
+    "port": "3306",
+    "user": "'root'",
+    "password": "123456",
+    "database": "test"
+  }
+}
