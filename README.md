@@ -8,52 +8,55 @@
 /**
  * Created by lizi on 16/4/26.
  */
-var Executor = require("../lib/executor");
-var Command = require("../lib/command");
+var dataAccess = require("dataAccess");
+var executor =dataAccess.executor;
+var command = dataAccess.command;
 
 //设置连接池配置,如果不设置则使用LIB里的config文件
-Executor.setPoolConfig(require("./config.json"));
+dataAccess.setPoolConfig(require("./config.json"));
 
 //设置Redis配置,如果不设置则为本机
-Executor.setRedisConfig(require("./redisConfig.json"));
+dataAccess.setRedisConfig(require("./redisConfig.json"));
 
 //初始化command
-var command  = new Command("SELECT * FROM dataAccess",[]);
-var command1 = new Command("INSERT INTO dataAccess (test,test1) VALUES(?,?)",["t1","t2"]);
-var command2 = new Command("UPDATE dataAccess SET test = ?,test1 = ?",["u1","u2"]);
-var command3 = new Command("DELETE FROM dataAccess WHERE id = ?",[1]);
-var command4 = new Command("INSERT INTO dataAccess (test,test1) VALUES(?,?)",["t4","t5"]);
-执行查询
-Executor.query("test",command,function(e,r)
+var c1  = new command("SELECT * FROM dataAccess",[]);
+var c2 = new command("INSERT INTO dataAccess (test,test1) VALUES(?,?)",["t1","t2"]);
+var c3 = new command("UPDATE dataAccess SET test = ?,test1 = ?",["u1","u2"]);
+var c4 = new command("DELETE FROM dataAccess WHERE id = ?",[1]);
+//执行查询
+executor.query("test",c3,function(e,r)
 {
     console.log(e);
     console.log(r);
 });
 
 //执行事物
-Executor.transaction("test",[command1,command4],function(e,r)
+executor.transaction("test",[c1,c2,c3,c4],function(e,r)
 {
     console.log(e);
     console.log(r);
 });
 
 //redis 设置
-Executor.redisSet("test","key","dsadasdas");
+executor.redisSet("test","key1","ke1test");
 
 //redis 获取
-Executor.redisGet("test","555",function(e,r)
+executor.redisGet("test","key1",function(e,r)
 {
     console.log(e);
     console.log(r);
 });
 
 //redis 设置对象
-Executor.redisSetObject('test',"object",{name:1,v:2});
+executor.redisSetObject('test',"object1",{name:1,v:2});
 
 //redis 读取对象
-Executor.redisGetObject('test','object',function(e,r)
+executor.redisGetObject('test','object1',function(e,r)
 {
     console.log(r);
 });
+
+//redis 删除对象
+executor.redisDelete('test','object1');
 ```
 
