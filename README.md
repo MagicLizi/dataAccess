@@ -5,6 +5,9 @@
 
 #Test
 ```
+/**
+ * Created by lizi on 16/4/26.
+ */
 var Executor = require("../lib/executor");
 var Command = require("../lib/command");
 
@@ -20,7 +23,7 @@ var command1 = new Command("INSERT INTO dataAccess (test,test1) VALUES(?,?)",["t
 var command2 = new Command("UPDATE dataAccess SET test = ?,test1 = ?",["u1","u2"]);
 var command3 = new Command("DELETE FROM dataAccess WHERE id = ?",[1]);
 var command4 = new Command("INSERT INTO dataAccess (test,test1) VALUES(?,?)",["t4","t5"]);
-//执行查询
+执行查询
 Executor.query("test",command,function(e,r)
 {
     console.log(e);
@@ -41,6 +44,15 @@ Executor.redisSet("test","key","dsadasdas");
 Executor.redisGet("test","555",function(e,r)
 {
     console.log(e);
+    console.log(r);
+});
+
+//redis 设置对象
+Executor.redisSetObject('test',"object",{name:1,v:2});
+
+//redis 读取对象
+Executor.redisGetObject('test','object',function(e,r)
+{
     console.log(r);
 });
 ```
