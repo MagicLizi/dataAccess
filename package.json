@@ -1,6 +1,6 @@
 {
   "name": "dataAccess",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "封装了REDIS,以及MYSQL的数据访问层",
   "author": "magiclizi",
   "repository": {
