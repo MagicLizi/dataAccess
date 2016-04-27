@@ -17,26 +17,33 @@ var command2 = new Command("UPDATE dataAccess SET test = ?,test1 = ?",["u1","u2"
 var command3 = new Command("DELETE FROM dataAccess WHERE id = ?",[1]);
 var command4 = new Command("INSERT INTO dataAccess (test,test1) VALUES(?,?)",["t4","t5"]);
 //执行查询
-Executor.query("test",command,function(e,r)
-{
-    console.log(e);
-    console.log(r);
-});
+//Executor.query("test",command,function(e,r)
+//{
+//    console.log(e);
+//    console.log(r);
+//});
+//
+////执行事物
+//Executor.transaction("test",[command1,command4],function(e,r)
+//{
+//    console.log(e);
+//    console.log(r);
+//});
+//
+////redis 设置
+//Executor.redisSet("test","key","dsadasdas");
+//
+////redis 获取
+//Executor.redisGet("test","555",function(e,r)
+//{
+//    console.log(e);
+//    console.log(r);
+//});
 
-//执行事物
-Executor.transaction("test",[command1,command4],function(e,r)
-{
-    console.log(e);
-    console.log(r);
-});
+Executor.redisSetObject('test',"object",{name:1,v:2});
 
-//redis 设置
-Executor.redisSet("test","key","dsadasdas");
-
-//redis 获取
-Executor.redisGet("test","555",function(e,r)
+Executor.redisGetObject('test','object',function(e,r)
 {
-    console.log(e);
     console.log(r);
 });
 
