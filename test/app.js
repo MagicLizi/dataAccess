@@ -17,7 +17,11 @@ executor.setRedisConfig(require("./redisConfig.json"));
 //初始化command
 var c1  = new command("SELECT * FROM dataAccess",[]);
 var c2 = new command("INSERT INTO dataAccess (test,test1) VALUES(?,?)",["t1","t2"]);
-var c3 = new command("UPDATE dataAccess SET test = ?,test1 = ? WHERE id = ?",["u1","u2",this.lastInsertId]);
+var c3 = new command("UPDATE dataAccess SET test = ?,test1 = ? WHERE id = ?",["u1","u2"]);
+c3.exeBefore = function()
+{
+    this.params.push(this.lastResult.insertId);
+}
 var c4 = new command("DELETE FROM dataAccess WHERE id = ?",[1]);
 //执行查询
 //executor.query("test",c3,function(e,r)
