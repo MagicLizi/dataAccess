@@ -11,31 +11,47 @@ var command = require('../lib/command');
 //设置连接池配置,如果不设置则使用LIB里的config文件
 executor.setPoolConfig(require("./config.json"));
 
+var c = new command('select count(*) as count from test where createAt is null',[]);
+var c1 = new command('insert into test(des) values(?)',['123']);
+var c2 = new command('insert into test(des) values(?)',['456']);
+var sqls = [c,c1,c2];
+
+c1.exeBefore = function(){
+    if(this.lastResult[0].count > 0){
+        this.jump = true;
+    }
+}
+
+executor.transaction('test',sqls,(e,r)=>{
+    console.log(e);
+    console.log(r);
+})
+
 //设置Redis配置,如果不设置则为本机
-executor.setRedisConfig(require("./redisConfig.json"));
+// executor.setRedisConfig(require("./redisConfig.json"));
 
 //初始化command
-var c1  = new command("SELECT * FROM dataAccess",[]);
-var c2 = new command("INSERT INTO dataAccess (test,test1) VALUES(?,?)",["t1","t2"]);
-var c3 = new command("UPDATE dataAccess SET test = ?,test1 = ? WHERE id = ?",["u1","u2"]);
-c3.exeBefore = function()
-{
-    this.params.push(this.lastResult.insertId);
-}
-var c4 = new command("DELETE FROM dataAccess WHERE id = ?",[1]);
-//执行查询
-//executor.query("test",c3,function(e,r)
-//{
-//    console.log(e);
-//    console.log(r);
-//});
-
-//执行事物
-executor.transaction("test",[c2,c3],function(e,r)
-{
-    //console.log(e);
-    //console.log(r);
-});
+// var c1  = new command("SELECT * FROM dataAccess",[]);
+// var c2 = new command("INSERT INTO dataAccess (test,test1) VALUES(?,?)",["t1","t2"]);
+// var c3 = new command("UPDATE dataAccess SET test = ?,test1 = ? WHERE id = ?",["u1","u2"]);
+// c3.exeBefore = function()
+// {
+//     this.params.push(this.lastResult.insertId);
+// }
+// var c4 = new command("DELETE FROM dataAccess WHERE id = ?",[1]);
+// //执行查询
+// //executor.query("test",c3,function(e,r)
+// //{
+// //    console.log(e);
+// //    console.log(r);
+// //});
+//
+// //执行事物
+// executor.transaction("test",[c2,c3],function(e,r)
+// {
+//     //console.log(e);
+//     //console.log(r);
+// });
 
 ////redis 设置
 //executor.redisSet("test","key1","ke1test");
