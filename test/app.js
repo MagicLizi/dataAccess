@@ -14,7 +14,7 @@ executor.setPoolConfig(require("./config.json"));
 var c = new command('select count(*) as count from test where createAt is null',[]);
 var c1 = new command('insert into test(des) values(?)',['123']);
 var c2 = new command('insert into test(des) values(?)',['456']);
-var sqls = [c,c1,c2];
+var sqls = [c];
 
 c1.exeBefore = function(){
     if(this.lastResult[0].count > 0){
@@ -22,7 +22,7 @@ c1.exeBefore = function(){
     }
 }
 
-executor.transaction('test',sqls,(e,r)=>{
+executor.query('test',c,(e,r)=>{
     console.log(e);
     console.log(r);
 })
